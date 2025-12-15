@@ -1,40 +1,94 @@
-import React, { useState } from "react";
-import Card from "./Card";
+// FormState.js
+import React, { useState } from 'react';
+import Card from './Card';
 
-const FormState = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+function FormState() {
+  // 1. Initialize state for all form fields
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
+  // 2. Generic change handler for all inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // Use the name attribute to update the corresponding state property
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // 3. Handler function for form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    alert(`
-Full Name: ${fullName}
-Email: ${email}
-Password: ${password}
-Confirm Password: ${confirmPassword}
-    `);
+    
+    console.log("FormState Data:", formData);
+    alert(`useState Form Submitted! Name: ${formData.fullName}`);
+    
+    // Note: State handling is better for validation and enabling/disabling buttons
   };
 
   return (
-    <Card>
+    <Card title="Section 3: Form Handling with useState (Controlled)">
+      {/* Required form id="info-form" */}
       <form id="info-form" onSubmit={handleSubmit}>
-        <h3>Form Using useState</h3>
-
-        <input id="full_name" value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" placeholder="Full Name" /><br /><br />
-
-        <input id="email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" /><br /><br />
-
-        <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" /><br /><br />
-
-        <input id="password_confirmation" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Confirm Password" /><br /><br />
-
-        <button type="submit">Submit</button>
+        <div style={{ marginBottom: '10px' }}>
+          <label htmlFor="full_name">Full Name:</label>
+          <input 
+            type="text" 
+            id="full_name" 
+            name="fullName" // Use 'name' to match the state property
+            value={formData.fullName} // 4. Attach value to state
+            onChange={handleChange} // 5. Attach change handler
+            style={{ width: '100%', padding: '8px' }} 
+            required 
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <label htmlFor="email">Email:</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            style={{ width: '100%', padding: '8px' }} 
+            required 
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <label htmlFor="password">Password:</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            style={{ width: '100%', padding: '8px' }} 
+            required 
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="password_confirmation">Confirm Password:</label>
+          <input 
+            type="password" 
+            id="password_confirmation" 
+            name="confirmPassword" 
+            value={formData.confirmPassword} 
+            onChange={handleChange} 
+            style={{ width: '100%', padding: '8px' }} 
+            required 
+          />
+        </div>
+        <button type="submit" style={{ padding: '10px 20px', backgroundColor: 'purple', color: 'white', border: 'none', borderRadius: '4px' }}>
+          Submit
+        </button>
       </form>
     </Card>
   );
-};
+}
 
 export default FormState;
